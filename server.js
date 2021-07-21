@@ -9,10 +9,10 @@ app.use(express.json())
 app.use(cors());
 
 app.get('/quotes', function(req, res) {
-    let hw = req.query.hw ? _.startCase(_.toLower(req.query.hw)): "%";
-    console.log("Searching for:", hw);
+    // let hw = req.query.hw ? _.startCase(_.toLower(req.query.hw)): "%";
     knex.select('*')
         .from('quotes')
+        .join('housewives', 'quotes.hw_id', 'housewives.id')
         .orderBy('hw_id', 'asc')
         .then(data => res.status(200).json(data))
         .catch(err =>
@@ -23,7 +23,6 @@ app.get('/quotes', function(req, res) {
 
 // app.get('/quotes', function(req, res) {
 //     let hw = req.query.hw ? _.startCase(_.toLower(req.query.hw)): "%";
-//     console.log("Searching for:", hw);
 //     knex.select('*')
 //         .from('quotes')
 //         .innerJoin("housewives", "quotes.hw_id", "housewives.id")
@@ -77,7 +76,7 @@ app.post('/newquote', function(req, res) {
                            .returning('id')
                            .then(id => {
                                hw_id = Number(id)
-                               knex('quotes').insert({quote: req.body.quote, hw_id: hw_id}).then(() => res.status(201).send("Quote added to database"))
+                               knex('quotes').insert({quote: req.body.quote, hw_id: hw_id, img_url: req.body.img_url}).then(() => res.status(201).send("Quote added to database"))
                            });
         }
     })
