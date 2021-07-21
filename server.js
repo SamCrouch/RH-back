@@ -78,4 +78,6 @@ app.delete('/delete', function(req, res) {
             }))
 })
 
+// app.patch('')
+
 app.listen(port, () => console.log(`app listening at real-housewives-server.herokuapp.com`))
