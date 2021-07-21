@@ -67,4 +67,15 @@ app.post('/newquote', function(req, res) {
     })
 })
 
+app.delete('/delete', function(req, res) {
+    knex('quotes')
+        .where('quote', req.body.quote)
+        .delete()
+        .then(data => res.status(200).json(data))
+        .catch(err =>
+            res.status(404).json({
+                message: 'quote not deleted'
+            }))
+})
+
 app.listen(port, () => console.log(`app listening at real-housewives-server.herokuapp.com`))
