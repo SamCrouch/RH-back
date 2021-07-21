@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(cors());
 
 app.get('/quotes', function(req, res) {
-    const hw = req.query.hw ? _.startCase(_.toLower(req.query.hw)): "%";
+    let hw = req.query.hw ? _.startCase(_.toLower(req.query.hw)): "%";
     console.log("Searching for:", hw);
     knex.select('*')
         .from('quotes')
