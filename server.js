@@ -13,8 +13,6 @@ app.get('/quotes', function(req, res) {
     console.log("Searching for:", hw);
     knex.select('*')
         .from('quotes')
-        .innerJoin("housewives", "quotes.hw_id", "housewives.id")
-        .whereRaw( `housewives.name LIKE '${hw}'`)
         .orderBy('hw_id', 'asc')
         .then(data => res.status(200).json(data))
         .catch(err =>
@@ -22,6 +20,24 @@ app.get('/quotes', function(req, res) {
                 message: 'No quotes by searched housewife'
             }))
 })
+
+// app.get('/quotes', function(req, res) {
+//     let hw = req.query.hw ? _.startCase(_.toLower(req.query.hw)): "%";
+//     console.log("Searching for:", hw);
+//     knex.select('*')
+//         .from('quotes')
+//         .innerJoin("housewives", "quotes.hw_id", "housewives.id")
+//         .whereRaw( `housewives.name LIKE '${hw}'`)
+//         .orderBy('hw_id', 'asc')
+//         .then(data => res.status(200).json(data))
+//         .catch(err =>
+//             res.status(404).json({
+//                 message: 'No quotes by searched housewife'
+//             }))
+// })
+
+
+
 
 app.get('/housewives', function(req, res) {
     knex.select('*')
