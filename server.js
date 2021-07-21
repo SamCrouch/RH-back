@@ -15,6 +15,7 @@ app.get('/quotes', function(req, res) {
         .from('quotes')
         .innerJoin("housewives", "quotes.hw_id", "housewives.id")
         .whereRaw( `housewives.name LIKE '${hw}'`)
+        .orderBy('hw_id', 'asc')
         .then(data => res.status(200).json(data))
         .catch(err =>
             res.status(404).json({
