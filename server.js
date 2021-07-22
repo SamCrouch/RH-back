@@ -10,7 +10,7 @@ app.use(cors());
 
 app.get('/quotes', function(req, res) {
     // let hw = req.query.hw ? _.startCase(_.toLower(req.query.hw)): "%";
-    knex.select('id', 'quote', 'img_url', 'housewives.name')
+    knex.select('quotes.id', 'quotes.quote', 'quotes.img_url', 'housewives.name')
         .from('quotes')
         .join('housewives', 'quotes.hw_id', 'housewives.id')
         .orderBy('hw_id', 'asc')
