@@ -87,9 +87,9 @@ app.patch('/:id', function(req,res) {
                 hw_id = Number(data[0].id)
                 knex('quotes')
                     .where('id', '=', req.body.id)
-                    .insert({
+                    .update({
                       quote: req.body.quote,
-                      hw_id: req.body.hw_id,
+                      hw_id: hw_id,
                       img_url: req.body.img_url
                     })
                     .then(() => res.status(201).send('Quote updated'))
