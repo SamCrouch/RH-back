@@ -21,23 +21,6 @@ app.get('/quotes', function(req, res) {
             }))
 })
 
-// app.get('/quotes', function(req, res) {
-//     let hw = req.query.hw ? _.startCase(_.toLower(req.query.hw)): "%";
-//     knex.select('*')
-//         .from('quotes')
-//         .innerJoin("housewives", "quotes.hw_id", "housewives.id")
-//         .whereRaw( `housewives.name LIKE '${hw}'`)
-//         .orderBy('hw_id', 'asc')
-//         .then(data => res.status(200).json(data))
-//         .catch(err =>
-//             res.status(404).json({
-//                 message: 'No quotes by searched housewife'
-//             }))
-// })
-
-
-
-
 app.get('/housewives', function(req, res) {
     knex.select('*')
         .from('housewives')
@@ -84,7 +67,7 @@ app.post('/newquote', function(req, res) {
 
 app.delete('/delete', function(req, res) {
     knex('quotes')
-        .where('quote', req.body.quote)
+        .where('id', req.body.id)
         .delete()
         .then(data => res.status(200).json(data))
         .catch(err =>
@@ -93,6 +76,19 @@ app.delete('/delete', function(req, res) {
             }))
 })
 
-// app.patch('')
+app.patch('/:id', function(req,res) {
+    knex('quotes')
+        .where('id', '=', req.body.id)
+        .update({
+            quote: req.body.quote,
+            hw_id: req.body.hw_id,
+            img_url: req.body.img_url
+        })
+        .then(data => res.status(200).json(data))
+        .catch(err =>
+            res.status(404).json({
+                message: 'quote not updated'
+            }))
+})
 
 app.listen(port, () => console.log(`app listening at real-housewives-server.herokuapp.com`))
