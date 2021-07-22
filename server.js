@@ -76,7 +76,7 @@ app.delete('/delete', function(req, res) {
             }))
 })
 
-app.post('/:id', function(req,res) {
+app.patch('/:id', function(req,res) {
     let hw_id = 0
     let housewife = _.startCase(_.toLower(req.body.name))
     knex.select('id')
@@ -87,11 +87,9 @@ app.post('/:id', function(req,res) {
                 hw_id = Number(data[0].id)
                 knex('quotes')
                     .where('id', '=', req.params.id)
-                    .insert({
-                      quote: req.body.quote,
-                      hw_id: hw_id,
-                      img_url: req.body.img_url
-                    })
+                    .update({quote: req.body.quote})
+                    .update({hw_id: hw_id})
+                    .update({img_url: req.body.img_url})
                     .then(() => res.status(201).send('Quote updated'))
             } else {
                 knex('housewives')
@@ -101,11 +99,9 @@ app.post('/:id', function(req,res) {
                         hw_id = Number(id)
                         knex('quotes')
                             .where('id', '=', req.params.id)
-                            .insert({
-                              quote: req.body.quote,
-                              hw_id: hw_id,
-                              img_url: req.body.img_url
-                            })
+                            .insert({quote: req.body.quote})
+                            .update({hw_id: hw_id})
+                            .update({img_url: req.body.img_url})
                             .then(() => res.status(201).send('Quote added to database with new housewife'))
                     })
             }
