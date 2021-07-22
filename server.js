@@ -77,18 +77,38 @@ app.delete('/delete', function(req, res) {
 })
 
 app.patch('/:id', function(req,res) {
-    knex('quotes')
-        .where('id', '=', req.body.id)
-        .update({
-            quote: req.body.quote,
-            hw_id: req.body.hw_id,
-            img_url: req.body.img_url
+    let hw_id = 0
+    let housewife = _.startCase(_.toLower(req.body.name))
+    knex.select('id')
+        .from('housewives')
+        .where({name: housewife})
+        .then(data => {
+            if(data.length > 0){
+                hw_id = Number(data[0].id)
+                knex('quotes')
+                    .where('id', '=', req.body.id)
+                    .update({
+                      quote: req.body.quote,
+                      hw_id: req.body.hw_id,
+                      img_url: req.body.img_url
+                    })
+                    .then(() => res.status(201).send('Quote updated'))
+            } else {
+                knex('housewives')
+                    .insert({name: housewife})
+                    .returning('id')
+                    .then(id => {
+                        hw_id = Number(id)
+                        knex('quotes')
+                            .insert({
+                              quote: req.body.quote,
+                              hw_id: hw_id,
+                              img_url: req.body.img_url
+                            })
+                            .then(() => res.status(201).send('Quote added to database with new housewife'))
+                    })
+            }
         })
-        .then(data => res.status(200).json(data))
-        .catch(err =>
-            res.status(404).json({
-                message: 'quote not updated'
-            }))
 })
 
 app.listen(port, () => console.log(`app listening at real-housewives-server.herokuapp.com`))
