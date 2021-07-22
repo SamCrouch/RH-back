@@ -86,7 +86,7 @@ app.post('/:id', function(req,res) {
             if(data.length > 0){
                 hw_id = Number(data[0].id)
                 knex('quotes')
-                    .where('id', '=', req.body.id)
+                    .where('id', '=', req.params.id)
                     .insert({
                       quote: req.body.quote,
                       hw_id: hw_id,
@@ -100,6 +100,7 @@ app.post('/:id', function(req,res) {
                     .then(id => {
                         hw_id = Number(id)
                         knex('quotes')
+                            .where('id', '=', req.params.id)
                             .insert({
                               quote: req.body.quote,
                               hw_id: hw_id,
