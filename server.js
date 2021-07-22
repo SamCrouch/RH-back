@@ -46,20 +46,29 @@ app.get('/randomquote', function(req, res) {
 
 app.post('/newquote', function(req, res) {
     let hw_id = 0
-    let housewife = _.startCase(_.toLower(req.body.hw))
-    knex.select('*')
+    let housewife = _.startCase(_.toLower(req.body.name))
+    knex.select('id')
     .from('housewives')
     .where({name: housewife})
     .then(data => {
         if(data.length > 0){
             hw_id = Number(data[0].id);
-            knex('quotes').insert({quote: req.body.quote, hw_id: hw_id}).then(() => res.status(201).send("Quote added to database"));
+            knex('quotes').insert({quote: req.body.quote,
+                                   hw_id: hw_id,
+                                   img_url: req.body.img_url
+                                  })
+                          .then(() => res.status(201).send("Quote added to database"));
         } else {
-            knex('housewives').insert({name: housewife})
-                           .returning('id')
-                           .then(id => {
-                               hw_id = Number(id)
-                               knex('quotes').insert({quote: req.body.quote, hw_id: hw_id, img_url: req.body.img_url}).then(() => res.status(201).send("Quote added to database"))
+            knex('housewives')
+              .insert({name: housewife})
+              .returning('id')
+              .then(id => {
+                hw_id = Number(id)
+                knex('quotes')
+                  .insert({quote: req.body.quote,
+                    hw_id: hw_id,
+                    img_url: req.body.img_url})
+                  .then(() => res.status(201).send("Quote added to database"))
                            });
         }
     })
