@@ -76,7 +76,7 @@ app.delete('/delete', function(req, res) {
             }))
 })
 
-app.patch('/:id', function(req,res) {
+app.post('/:id', function(req,res) {
     let hw_id = 0
     let housewife = _.startCase(_.toLower(req.body.name))
     knex.select('id')
