@@ -12,7 +12,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:knex": "npx knex migrate:latest",
+    "start:knex": "npx knex migrate:latest && npx knex seed:run",
     "start": "npm run start:knex && node server.js"
   },
   "author": "",
