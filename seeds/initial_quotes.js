@@ -1,6 +1,5 @@
 
 exports.seed = function(knex) {
-  // Deletes ALL existing entries
   return knex('quotes').del()
     .then(function () {
       return knex('quotes').insert([
