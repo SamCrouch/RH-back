@@ -6,7 +6,13 @@ exports.seed = function(knex) {
       return knex('housewives').insert([
         {name: 'Bethenny Frankel'},
         {name: 'Teresa Giudice'},
-        {name: 'NeNe Leakes'}
+        {name: 'NeNe Leakes'},
+        {name: 'Lisa Vanderpump'},
+        {name: 'LuAnn de Lesseps'},
+        {name: 'Vicki Gunvalson'},
+        {name: 'Heather Dubrow'},
+        {name: 'Shannon Beador'},
+        {name: 'Ramona Singer'},
       ]);
     });
 };
